@@ -20,7 +20,9 @@ O(n)계산
                  .
                  .
                  =is_prime(i,0)+(i-1)*c
-                 =i*c 
+                 =i*i
+                 =i^2
+                 =O(i^2)
 */
 #include <stdio.h>
 
