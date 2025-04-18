@@ -32,14 +32,11 @@ void destroyList(listType* list) {
     free(list->name_array);
     free(list);
 }
-void add_number(listType*list, int num[3],char name[20]){
-    num[0]=atoi(strtok(name,"-"));
-    num[1]=atoi(strtok(NULL,"-"));
-    num[2]=atoi(strtok(NULL,"-"));
+void add_number(listType*list, char name[20], char num[20]){
     list->last++;
-    list->array[list->last].num[0] = num[0];
-    list->array[list->last].num[1] = num[1];
-    list->array[list->last].num[2] = num[2];
+    list->array[list->last].num[0]=atoi(strtok(num,"-"));
+    list->array[list->last].num[1]=atoi(strtok(NULL,"-"));
+    list->array[list->last].num[2]=atoi(strtok(NULL,"-"));
     strcpy(list->name_array[list->last].name,name);
 }
 void delete_number(listType* list, char name[20]){
@@ -63,17 +60,16 @@ void delete_number(listType* list, char name[20]){
     }
 }
 void search_number(listType* list, char name[20]){
-    int i;
-    for(i=0;i<list->last;i++){
+    for(int i=0;i<=list->last;i++){
         if(strcmp(list->name_array[i].name,name)==0){
-            printf("[%d]전화번호: %d-%d-%d\n",i, list->array[i].num[0], list->array[i].num[1], list->array[i].num[2]);
+            printf("이름: %s, 전화번호: 0%d-%d-%d\n", list->name_array[i].name, list->array[i].num[0], list->array[i].num[1], list->array[i].num[2]);
             return;
         }
     }
 }
 void print_numberbook(listType* list){
     for(int i=0;i<=list->last;i++){
-        printf("이름: %s, 전화번호: %d-%d-%d\n", list->name_array[i].name, list->array[i].num[0], list->array[i].num[1], list->array[i].num[2]);
+        printf("[%d]이름: %s, 전화번호: 0%d-%d-%d\n", i+1, list->name_array[i].name, list->array[i].num[0], list->array[i].num[1], list->array[i].num[2]);
     }
 }
 
@@ -81,7 +77,7 @@ void print_numberbook(listType* list){
 int main(){
     listType* phonebook;
     phonebook = createList(10);
-    int num[3];
+    char num[20];
     char name[20];
     printf("**** 전화번호부 메뉴 ****\n");
     printf("1. 전화번호 등록\n");
@@ -91,16 +87,16 @@ int main(){
     printf("0. 종료\n");
     printf("메뉴를 선택하세요: ");
 
-    int choice;
+    int choice=5;
     scanf("%d",&choice);
     while(choice !=0){
         if(choice == 1){    //연락처 추가
             printf("이름을 입력하세요: ");
             scanf("%s",name);
             printf("전화번호를 입력하세요(형식: 010-1234-5678): ");
-            scanf("%s",name);
+            scanf("%s",num);
 
-            add_number(phonebook,num,name);
+            add_number(phonebook,name,num);
             printf("연락처가 추가되었습니다.\n");
         }    
         else if(choice == 2){   //연락처 삭제
@@ -119,7 +115,7 @@ int main(){
         else if(choice==0){     //종료
             printf("프로그램을 종료합니다.\n");
             destroyList(phonebook);
-            return 0;
+            break;
         }
         else{
             printf("잘못된 입력입니다. 다시 입력하세요.\n");
